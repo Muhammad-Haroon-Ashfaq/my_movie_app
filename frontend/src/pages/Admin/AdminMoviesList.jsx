@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
 import { useGetAllMoviesQuery } from '../../redux/api/movies'
 
-
 const AdminMoviesList = () => {
   const { data: movies }  = useGetAllMoviesQuery()
     return (
-    <div className="container mx-[9rem]">
+    <div>
     <div className="flex flex-col md:flex-row">
         <div className="p-3">
             <div className="ml-[2rem] text-xl- font-bold h-12">

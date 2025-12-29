@@ -6,10 +6,11 @@ const App = () => {
   return (
     <>
     <ToastContainer/>
-    <Navigation/>
+    
     <main className="py-3">
       <Outlet/>
     </main>
+    <Navigation/>
 </>
   );
 };

@@ -73,7 +73,7 @@ const Profile = () => {
                 </div>
 
                 <div className="flex justify-between">
-                  <button type="submit" className="bg-teal-500 w-screen mt-[2rem] font-bold text-white
+                  <button type="submit" className="bg-teal-500 w-full mt-[2rem] font-bold text-white
                   py-2 px-4 rounded hover:bg-teal-600">Update
                   </button>
                   {loadingUpdateProfile && <Loader/>}  
