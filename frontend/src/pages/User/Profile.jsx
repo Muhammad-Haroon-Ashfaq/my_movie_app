@@ -7,8 +7,8 @@ import {useProfileMutation} from '../../redux/api/users';
 const Profile = () => {
   const [username, setUsername] = useState(" ")
   const [email, setEmail] = useState(" ")
-  const [password, setPassword] = useState(" ")
-  const [confirmPassword, setConfirmPassword] = useState(" ")
+  const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
 
   const {userInfo} = useSelector((state) => state.auth)
 

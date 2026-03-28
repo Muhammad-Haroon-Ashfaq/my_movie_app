@@ -56,7 +56,7 @@ const Navigation = () => {
 
   return (
     
-    <div className="bg-[#0f0f0f] border w-[99.9%] px-16 py-5 mb-[1px]">
+    <div className="bg-[#0f0f0f] border relative w-[99.9%] px-16 py-5 mb-[1px]">
         
       <section className="flex justify-between items-center">
         {/* LEFT ICONS */}
