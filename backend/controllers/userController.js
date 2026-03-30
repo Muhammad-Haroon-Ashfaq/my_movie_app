@@ -60,15 +60,17 @@
         }
     });
 
-    const logoutCurrentUser = asyncHandler(async (req,res) =>{
-        res.cookie('jwt', '',{
+    const logoutCurrentUser = asyncHandler(async (req, res) => {
+        res.cookie('jwt', '', {
             httpOnly: true,
+            secure: true,      // Live site ke liye zaroori hai
+            sameSite: 'None',  // Cross-site cookie allow karne ke liye
             expires: new Date(0),
         })
 
-        res.status(200).json({message: 'Logged out sucessfully'});
+        res.status(200).json({ message: 'Logged out successfully' });
     });
-
+    
     const getAllUsers = asyncHandler(async(req,res) => {
         const users = await User.find({})
         res.json(users);

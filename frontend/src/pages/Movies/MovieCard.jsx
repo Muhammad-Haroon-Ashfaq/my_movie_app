@@ -5,7 +5,7 @@ const MovieCard = ({ movie }) => {
     <div className="relative group m-4">
       <Link to={`/movies/${movie._id}`}>
         <img
-  src={`/uploads/${movie.image}`} // Rasta seedha uploads folder tak
+  src={`/uploads/${movie.image}`} 
   alt={movie.name}
   className="w-[20rem] rounded transition duration-300 ease-in-out transform group-hover:opacity-50"
 />
