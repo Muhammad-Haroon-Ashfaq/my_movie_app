@@ -1,28 +1,51 @@
 import Genre from "../models/Genre.js";
 import asyncHandler from "../middlewares/asyncHandler.js";
 
-const createGenre = asyncHandler(async(req, res) => {
+// const createGenre = asyncHandler(async(req, res) => {
+//     try {
+//         const {name} = req.body
+
+//         if (!name) {
+//             return res.json({error:"Name is required"})
+//         }
+
+//         const existingGenre = await Genre.findOne({name})
+
+//         if (existingGenre) {
+//            return res.json({error:"Already exists"}) 
+//         }
+
+//         const genre = await new Genre({name}).save()
+//         res.json(genre);
+
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(400).json(error);
+//     }
+// })
+
+const createGenre = asyncHandler(async (req, res) => {
     try {
-        const {name} = req.body
+        const { name } = req.body;
 
         if (!name) {
-            return res.json({error:"Name is required"})
+            return res.status(400).json({ error: "Name is required" });
         }
 
-        const existingGenre = await Genre.findOne({name})
-
+        const existingGenre = await Genre.findOne({ name });
         if (existingGenre) {
-           return res.json({error:"Already exists"}) 
+            return res.status(400).json({ error: "Already exists" });
         }
 
-        const genre = await new Genre({name}).save()
-        res.json(genre);
+        const genre = await new Genre({ name }).save();
+        res.status(201).json(genre);
 
     } catch (error) {
-        console.log(error);
-        return res.status(400).json(error);
+        console.error("Genre Creation Error:", error);
+        return res.status(500).json({ error: "Internal server error" });
     }
-})
+});
+
 const updateGenre = asyncHandler(async (req,res) => {
     try {
             const {name} = req.body
@@ -45,20 +68,35 @@ const updateGenre = asyncHandler(async (req,res) => {
     }
 })
 
+// const removeGenre = asyncHandler(async (req, res) => {
+//     try {
+//         const {id} = req.params;
+//         const removed = await Genre.findByIdAndDelete(id)
+
+//         if (!removeGenre) {
+//             return res.status(404).json({error: "Genre not found"})
+//         }
+//         res.json(removed);
+//     } catch (error) {
+//         console.error(error)
+//         res.status(500).json({error: "Interval server error"})
+//     }
+// })
+
 const removeGenre = asyncHandler(async (req, res) => {
     try {
-        const {id} = req.params;
-        const removed = await Genre.findByIdAndDelete(id)
+        const { id } = req.params;
+        const removed = await Genre.findByIdAndDelete(id);
 
-        if (!removeGenre) {
-            return res.status(404).json({error: "Genre not found"})
+        if (!removed) {
+            return res.status(404).json({ error: "Genre not found" });
         }
         res.json(removed);
     } catch (error) {
-        console.error(error)
-        res.status(500).json({error: "Interval server error"})
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
     }
-})
+});
 
 const listGenres = asyncHandler(async (req, res) => {
     try {
