@@ -6,11 +6,11 @@ const generateToken = (res, userId) => {
   // Set JWT as an HTTP_Only Cookie
   res.cookie('jwt', token, {
     httpOnly: true,
-    // Live site (HTTPS) par secure true hona chahiye
-    secure: true, 
-    // Cross-site (Hostinger to Railway) ke liye 'None' lazmi hai
-    sameSite: "None", 
-    maxAge: 30 * 24 * 60 * 60 * 1000,
+    // LOCAL: testing ke liye false, PRODUCTION: true
+    secure: process.env.NODE_ENV === "production", 
+    // Cross-site cookie handling
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+    maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
   });
 
   return token;
