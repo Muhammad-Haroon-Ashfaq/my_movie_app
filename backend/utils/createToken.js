@@ -7,17 +7,14 @@ const generateToken = (res, userId) => {
     { expiresIn: "30d" }
   );
 
-  // Check environment
-  const isProduction = process.env.NODE_ENV === "production";
-
-  // createToken.js mein res.cookie wala hissa aise update karein:
-res.cookie("jwt", token, {
+  res.cookie("jwt", token, {
     httpOnly: true,
-    secure: true,      // HTTPS lazmi hai (Railway pe hota hai)
-    sameSite: "none",  // Cross-site cookie save karne ke liye 'none' lazmi hai
+    secure: true,      // Railway HTTPS ke liye
+    sameSite: "none",  // Hostinger se Railway data bhejne ke liye
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    path: "/",         // Pori site ke liye accessible
-});
+    path: "/",
+  });
+
   return token;
 };
 
