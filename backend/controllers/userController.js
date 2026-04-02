@@ -34,10 +34,33 @@
         }
     });
 
-    const loginUser = asyncHandler(async(req,res)=> {
-        const{email,password} = req.body;
+    // const loginUser = asyncHandler(async(req,res)=> {
+    //     const{email,password} = req.body;
 
-        const loginUser = asyncHandler(async (req, res) => {
+    //     const existingUser = await User.findOne({email});
+    //     if (existingUser) {
+    //         const isPasswordValid = await bcrypt.compare(password, existingUser.password)
+
+    //         if (isPasswordValid) {
+    //             createToken(res,existingUser._id);
+               
+    //              res.status(201).json({
+    //             _id: existingUser._id,
+    //             username: existingUser.username,
+    //             email: existingUser.email,
+    //             isAdmin: existingUser.isAdmin,
+    //         });
+
+    //         }
+    //     else {
+    //         res.status(401).json({message: "Invalid Password" });
+    //     }
+    //     } else{
+    //         res.status(401).json({message: "User Not Found" });
+    //     }
+    // });
+
+const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
@@ -60,7 +83,6 @@
         res.status(401).json({ message: "Invalid email or password" });
     }
 });
-    });
 
     const logoutCurrentUser = asyncHandler(async (req, res) => {
         res.cookie("jwt", "", {
