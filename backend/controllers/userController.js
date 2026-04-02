@@ -61,12 +61,13 @@
     });
 
     const logoutCurrentUser = asyncHandler(async (req, res) => {
-        res.cookie('jwt', '', {
-            httpOnly: true,
-            secure: true,      // Live site ke liye zaroori hai
-            sameSite: 'None',  // Cross-site cookie allow karne ke liye
-            expires: new Date(0),
-        })
+        res.cookie("jwt", "", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+        expires: new Date(0),
+        path: "/",
+        });
 
         res.status(200).json({ message: 'Logged out successfully' });
     });
