@@ -37,27 +37,29 @@
     const loginUser = asyncHandler(async(req,res)=> {
         const{email,password} = req.body;
 
-        const existingUser = await User.findOne({email});
-        if (existingUser) {
-            const isPasswordValid = await bcrypt.compare(password, existingUser.password)
+        const loginUser = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
 
-            if (isPasswordValid) {
-                createToken(res,existingUser._id);
-               
-                 res.status(201).json({
-                _id: existingUser._id,
-                username: existingUser.username,
-                email: existingUser.email,
-                isAdmin: existingUser.isAdmin,
-            });
+    const existingUser = await User.findOne({ email });
 
-            }
-        else {
-            res.status(401).json({message: "Invalid Password" });
-        }
-        } else{
-            res.status(401).json({message: "User Not Found" });
-        }
+    if (existingUser && (await bcrypt.compare(password, existingUser.password))) {
+        const token = jwt.sign(
+            { userId: existingUser._id },
+            process.env.JWT_SECRET,
+            { expiresIn: "30d" }
+        );
+
+        res.status(200).json({
+            _id: existingUser._id,
+            username: existingUser.username,
+            email: existingUser.email,
+            isAdmin: existingUser.isAdmin,
+            token, // 👈 IMPORTANT
+        });
+    } else {
+        res.status(401).json({ message: "Invalid email or password" });
+    }
+});
     });
 
     const logoutCurrentUser = asyncHandler(async (req, res) => {
