@@ -12,14 +12,10 @@ const generateToken = (res, userId) => {
 
   res.cookie("jwt", token, {
     httpOnly: true,
-    secure: isProduction,                 // HTTPS pe hi cookie send hogi
-    sameSite: isProduction ? "None" : "Lax", // Cross-origin handle
+    secure: true,      // Railway pe ye TRUE hona lazmi hai
+    sameSite: "none",  // Cross-site ke liye ye NONE hona lazmi hai
     maxAge: 30 * 24 * 60 * 60 * 1000,
-
-    // 👇 IMPORTANT (optional but recommended)
-    path: "/", 
-  });
-
+});
   return token;
 };
 
