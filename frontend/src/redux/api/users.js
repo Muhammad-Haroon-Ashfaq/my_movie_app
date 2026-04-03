@@ -5,13 +5,14 @@ import { logout } from '../feactures/auth/authSlice';
 import Profile from '../../pages/User/Profile';
 export const userApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        Login: builder.mutation({
-            query: (data) => ({
-                url: `${USERS_URL}/auth`,
-                method: 'Post',
-                body: data,
-            }),
-        }),
+       Login: builder.mutation({
+    query: (data) => ({
+        url: `${USERS_URL}/auth`,
+        method: 'POST',
+        body: data,
+        credentials: 'include', // 🔥 ADD THIS
+    }),
+}),
 
     register: builder.mutation({
         query:(data) => ({
@@ -22,19 +23,23 @@ export const userApiSlice = apiSlice.injectEndpoints({
     }),
 
     logout: builder.mutation({
-        query: () => ({
-            url:`${USERS_URL}/logout`,
-            method: "POST",
-       }),
-    }),
+    query: () => ({
+        url:`${USERS_URL}/logout`,
+        method: "POST",
+        credentials: 'include', // 🔥 ADD THIS
+   }),
+}),
 
     Profile: builder.mutation({
-        query: (data) => ({
-            url: `${USERS_URL}/profile`,
-            method:"PUT",
-            body:data,
-      }),
-    }),
+    query: (data) => ({
+        url: `${USERS_URL}/profile`,
+        method:"PUT",
+        body:data,
+        credentials: 'include', // 🔥 ADD THIS
+  }),
+}),
+
+
     getUsers: builder.query({
         query: () => ({
             url: USERS_URL,

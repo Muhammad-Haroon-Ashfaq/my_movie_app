@@ -5,33 +5,32 @@ export const genreApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         // Naya Genre banane ke liye
         createGenre: builder.mutation({
-            query: (newGenre) => ({
-                url: `${GENRE_URL}`,
-                method: "POST",
-                body: newGenre,
-            }),
-            // Is se 'Genre' list refresh ho jayegi
-            invalidatesTags: ["Genre"], 
-        }),
+    query: (newGenre) => ({
+        url: `${GENRE_URL}`,
+        method: "POST",
+        body: newGenre,
+        credentials: 'include', // 🔥 ADD THIS
+    }),
+    invalidatesTags: ["Genre"], 
+}),
 
         // Genre update karne ke liye
         updateGenre: builder.mutation({
-            query: ({ id, updateGenre }) => ({
-                url: `${GENRE_URL}/${id}`,
-                method: "PUT",
-                body: updateGenre,
-            }),
-            invalidatesTags: ["Genre"],
-        }),
-
+    query: ({ id, updateGenre }) => ({
+        url: `${GENRE_URL}/${id}`,
+        method: "PUT",
+        body: updateGenre,
+        credentials: 'include', // 🔥 ADD
+    }),
+}),
         // Genre delete karne ke liye
         deleteGenre: builder.mutation({
-            query: (id) => ({
-                url: `${GENRE_URL}/${id}`,
-                method: "DELETE",
-            }),
-            invalidatesTags: ["Genre"],
-        }),
+    query: (id) => ({
+        url: `${GENRE_URL}/${id}`,
+        method: "DELETE",
+        credentials: 'include', // 🔥 ADD
+    }),
+}),
 
         // Saare Genres fetch karne ke liye
         fetchGenre: builder.query({
