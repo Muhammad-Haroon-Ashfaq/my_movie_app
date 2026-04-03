@@ -4,13 +4,13 @@ import asyncHandler from "./asyncHandler.js";
 
 const authenticate = asyncHandler(async (req, res, next) => {
     let token = req.cookies.jwt;
-
+    console.log("Token received:", token);
     if (token) {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
             // .select('-password') zaroori hai security ke liye
             req.user = await User.findById(decoded.userId).select("-password");
-            
+            console.log("User found:", req.user);
             if (!req.user) {
                 res.status(401);
                 throw new Error("User not found");
