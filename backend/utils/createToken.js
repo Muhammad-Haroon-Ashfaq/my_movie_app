@@ -13,6 +13,7 @@ const generateToken = (res, userId) => {
     sameSite: "none",  // Hostinger se Railway data bhejne ke liye
     maxAge: 30 * 24 * 60 * 60 * 1000,
     path: "/",
+    domain: ".railway.app",
   });
 
   return token;
