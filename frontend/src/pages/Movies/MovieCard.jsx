@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
+import { BASE_URL } from '../constants';
 
 const MovieCard = ({ movie }) => {
   return (
     <div className="relative group m-4">
       <Link to={`/movies/${movie._id}`}>
         <img
-  src={`/uploads/${movie.image}`} 
+  src={`${BASE_URL}${movie.image}`} 
   alt={movie.name}
   className="w-[20rem] rounded transition duration-300 ease-in-out transform group-hover:opacity-50"
 />
