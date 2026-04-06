@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { BASE_URL } from '../constants';
+import { BASE_URL } from "../../redux/constants";
 
 const MovieCard = ({ movie }) => {
   return (
