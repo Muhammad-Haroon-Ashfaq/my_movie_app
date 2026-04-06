@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import path from "path";
 import cors from "cors"; 
+import fs from "fs"; // Folder check karne ke liye
 
 // Files 
 import connectDB from "./config/db.js";
@@ -16,10 +17,10 @@ connectDB();
 
 const app = express();
 
-// 👇 RAILWAY KE LIYE YE LINE SABSE ZAROORI HAI (Cookies handle karne ke liye)
+// Railway proxy trust (CORS aur Cookies ke liye zaroori hai)
 app.set("trust proxy", 1); 
 
-// Updated CORS Settings
+// CORS Configuration
 app.use(cors({
   origin: [
     "https://mern-movie-project.socialrepublic.pk",
@@ -34,15 +35,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Routes
-app.use("/uploads", express.static("uploads"));
+// Static Folder Setup (Uploads ke liye)
+const __dirname = path.resolve();
+const uploadDir = path.join(__dirname, "uploads");
+
+// Agar uploads folder nahi hai toh bana do (Railway fix)
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+}
+
+// Serve static files from the 'uploads' directory
+app.use("/uploads", express.static(uploadDir));
+
+// API Routes
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/genre', genreRoutes);
 app.use('/api/v1/movies', moviesRoutes);
 app.use('/api/v1/upload', uploadRoutes);
 
-const __dirname = path.resolve();
-app.use('/uploads', express.static(path.join(__dirname, "/uploads")));
-
+// Port setup for Railway
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
