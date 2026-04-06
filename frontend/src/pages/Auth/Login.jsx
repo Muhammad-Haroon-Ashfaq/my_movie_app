@@ -30,12 +30,23 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const res = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
-      navigate(redirect);
-    } catch (err) {
-      toast.error(err?.data?.message || err.error);
-    }
+  const res = await login({ email, password }).unwrap();
+
+  localStorage.setItem("token", res.token); // 🔥 FIX
+
+  dispatch(setCredentials({ ...res }));
+  navigate(redirect);
+} catch (err) {
+  toast.error(err?.data?.message || err.error);
+}
+
+    // try {
+    //   const res = await login({ email, password }).unwrap();
+    //   dispatch(setCredentials({ ...res }));
+    //   navigate(redirect);
+    // } catch (err) {
+    //   toast.error(err?.data?.message || err.error);
+    // }
   };
 
   return (
