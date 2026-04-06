@@ -35,6 +35,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Routes
+app.use("/uploads", express.static("uploads"));
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/genre', genreRoutes);
 app.use('/api/v1/movies', moviesRoutes);
