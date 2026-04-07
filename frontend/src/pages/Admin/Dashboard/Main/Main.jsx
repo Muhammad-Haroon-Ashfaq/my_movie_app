@@ -108,12 +108,12 @@ const Main = () => {
 
           {/* 🔥 FIX HERE */}
           {topMovies?.map((movie) => (
-            <VideoCard 
-              key={movie._id} 
-              image={`${BASE_URL}${movie.image}`}  // ✅ FIXED
-              title={movie.name} 
-              date={movie.year} 
-              comments={movie.numReviews}
+           <VideoCard 
+            key={movie._id} 
+            image={movie.image}   // ✅ simple rakho
+            title={movie.name} 
+            date={movie.year} 
+            comments={movie.numReviews}
             />
           ))}
 

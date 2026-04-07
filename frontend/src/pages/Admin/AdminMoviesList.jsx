@@ -22,6 +22,7 @@ const AdminMoviesList = () => {
                         <img 
                             src={`${BASE_URL}${movie.image}`} 
                             alt={movie.name} 
+                            loading="lazy"
                             className="w-full h-48 object-cover" 
                             />
 

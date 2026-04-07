@@ -105,7 +105,13 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 // ✨ Static files serve karne ka sahi tariqa (Path join ke sath)
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "/uploads"), {
+    maxAge: "7d", // ✅ cache 7 din
+  })
+);
 // ---------------------------
 
 // API Routes
