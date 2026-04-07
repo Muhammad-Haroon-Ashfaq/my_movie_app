@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useGetAllMoviesQuery } from '../../redux/api/movies'
-
+import { BASE_URL } from "../../redux/constants";
 const AdminMoviesList = () => {
   const { data: movies }  = useGetAllMoviesQuery()
     return (
@@ -19,7 +19,11 @@ const AdminMoviesList = () => {
                     <div className="flex">
                     <div key={movie._id} className="max-w-sm m-[2rem] rounded overflow-hidden 
                     shadow-lg">
-                        <img src={movie.image} alt={movie.name} className="w-full h-48 object-cover" />
+                        <img 
+                            src={`${BASE_URL}${movie.image}`} 
+                            alt={movie.name} 
+                            className="w-full h-48 object-cover" 
+                            />
 
                     <div className="px-6 py-4 border border-gray-400">
                         <div className="font-bold text-xl mb-2">{movie.name}</div>
