@@ -20,7 +20,7 @@ const AdminMoviesList = () => {
                     <div key={movie._id} className="max-w-sm m-[2rem] rounded overflow-hidden 
                     shadow-lg">
                         <img 
-                            src={`${BASE_URL}${movie.image}`} 
+                            src={movie.image} 
                             alt={movie.name} 
                             loading="lazy"
                             className="w-full h-48 object-cover" 

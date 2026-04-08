@@ -6,7 +6,7 @@ const VideoCard = ({ image, title, date, comments }) => {
       <div className="flex items-center w-[90%] mt-5">
         <div>
           <img 
-            src={`${BASE_URL}${image}`}   // ✅ FIX HERE
+            src={image}   // ✅ FIX HERE
             alt="Card Image"
             loading="lazy" 
             className="h-[3rem]" 
