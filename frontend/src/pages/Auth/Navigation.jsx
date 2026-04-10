@@ -1,184 +1,87 @@
 import { useState, useEffect, useRef } from "react";
-import {
-  AiOutlineHome,
-  AiOutlineLogin,
-  AiOutlineUserAdd,
-} from "react-icons/ai";
+import { AiOutlineHome, AiOutlineLogin, AiOutlineUserAdd } from "react-icons/ai";
 import { MdOutlineLocalMovies } from "react-icons/md";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { useSelector, useDispatch, createDispatchHook } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../../redux/api/users";
 import { logout } from "../../redux/feactures/auth/authSlice";
 
 const Navigation = () => {
   const { userInfo } = useSelector((state) => state.auth);
-
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const location = useLocation();
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [logoutApiCall] = useLogoutMutation();
 
-  const toggleDropdowm = () => {
-    setDropdownOpen((prev) => !prev);
-  };
+  const toggleDropdowm = () => setDropdownOpen((prev) => !prev);
 
-  // Route change pe dropdown close
-  useEffect(() => {
-    setDropdownOpen(false);
-  }, [location]);
-
-  // Outside click pe dropdown close
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setDropdownOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
+  useEffect(() => { setDropdownOpen(false); }, [location]);
 
   const logoutHandler = async () => {
     try {
       await logoutApiCall().unwrap();
       dispatch(logout());
       navigate("/login");
-    } catch (error) {
-      console.error(error);
-    }
+    } catch (error) { console.error(error); }
   };
 
   return (
-    
-    <div className="bg-[#0f0f0f] border relative w-[99.9%] px-16 py-5 mb-[1px]">
+    // FIX: 'fixed' ki jagah 'sticky' use karein aur width full rakhein
+    <nav className="bg-[#0f0f0f] border-b border-[#242424] sticky top-0 z-50 w-full px-6 md:px-16 py-4">
+      <div className="max-w-[1400px] mx-auto flex justify-between items-center">
         
-      <section className="flex justify-between items-center">
         {/* LEFT ICONS */}
-        <div className="flex justify-center items-center">
-          <Link
-            to="/"
-            className="flex items-center transition-transform transform hover:translate-x-2"
-          >
-            <AiOutlineHome className="fill-white mr-2" size={26} />
-            <span className="hidden nav-items-name text-white ">
-              Home
-            </span>
+        <div className="flex items-center gap-8">
+          <Link to="/" className="flex items-center text-white hover:text-blue-500 transition-colors">
+            <AiOutlineHome size={24} />
+            <span className="ml-2 font-semibold">Home</span>
           </Link>
 
-          <Link
-            to="/movies"
-            className="flex items-center transition-transform transform
-            hover:translate-x-2 ml-[1rem]"
-          >
-            <MdOutlineLocalMovies
-              className="fill-white mr-2"
-              size={26}
-            />
-            <span className="hidden nav-item-name mt-[3rem]">SHOP</span>
+          <Link to="/movies" className="flex items-center text-white hover:text-blue-500 transition-colors">
+            <MdOutlineLocalMovies size={24} />
+            <span className="ml-2 font-semibold">Browse</span>
           </Link>
         </div>
-        {/* USER DROPDOWN */}
+
+        {/* RIGHT SECTION (User/Auth) */}
         <div ref={dropdownRef} className="relative">
-          <button
-            onClick={toggleDropdowm}
-            className="text-white focus:outline-none flex items-center"
-          >
-            {userInfo && <span>{userInfo.username}</span>}
+          {userInfo ? (
+            <>
+              <button onClick={toggleDropdowm} className="text-white flex items-center gap-2 hover:bg-gray-800 px-4 py-2 rounded-lg transition-all">
+                <span className="font-bold">{userInfo.username}</span>
+                <svg className={`h-4 w-4 transition-transform ${dropdownOpen ? "rotate-180" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
 
-            {userInfo && (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className={`h-4 w-4 ml-1 transition-transform ${
-                  dropdownOpen ? "rotate-180" : ""
-                }`}
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="white"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d={dropdownOpen ? "M5 15l7-7 7 7" : "M19 9l-7 7-7-7"}
-                />
-              </svg>
-            )}
-          </button>
-
-          {dropdownOpen && userInfo && (
-            <ul
-              className={`absolute right-0 mt-[-2rem] w-[10rem]
-              space-y-2 bg-white text-gray-600 shadow-lg rounded
-              ${!userInfo.isAdmin ? "-top-20" : "-top-24"}`}
-            >
-              {userInfo.isAdmin && (
-                <li>
-                  <Link
-                    to="/admin/movies/dashboard"
-                    className="block px-4 py-2 hover:bg-gray-100"
-                  >
-                    Dashboard
-                  </Link>
-                </li>
+              {dropdownOpen && (
+                <ul className="absolute right-0 mt-2 w-48 bg-white text-gray-800 shadow-2xl rounded-xl py-2 z-[60]">
+                  {userInfo.isAdmin && (
+                    <li><Link to="/admin/movies/dashboard" className="block px-4 py-3 hover:bg-gray-100 font-medium">Dashboard</Link></li>
+                  )}
+                  <li><Link to="/profile" className="block px-4 py-3 hover:bg-gray-100 font-medium">Profile</Link></li>
+                  <li className="border-t border-gray-100 mt-1">
+                    <button onClick={logoutHandler} className="block w-full text-left px-4 py-3 hover:bg-red-50 text-red-600 font-bold transition-colors">Logout</button>
+                  </li>
+                </ul>
               )}
-
-              <li>
-                <Link
-                  to="/profile"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                >
-                  Profile
-                </Link>
-              </li>
-
-              <li>
-                <button
-                  onClick={logoutHandler}
-                  className="block w-full px-4 py-2 text-left hover:bg-gray-100"
-                >
-                  Logout
-                </button>
-              </li>
-            </ul>
-          )}
-
-          {!userInfo && (
-            <ul className="flex">
-              <li>
-                <Link
-                  to="/login"
-                  className="flex items-center transition-transform transform 
-                  hover:translate-x-2"
-                >
-                  <AiOutlineLogin
-                    className="fill-white mr-2 mt-[4px]"
-                    size={26}
-                  />
-                  <span className="hidden nav-item-name">LOGIN</span>
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  to="/register"
-                  className="flex items-center transition-transform transform 
-                  hover:translate-x-2 ml-[1rem]"
-                >
-                  <AiOutlineUserAdd className="fill-white" size={26} />
-                  <span className="hidden nav-item-name">Register</span>
-                </Link>
-              </li>
-            </ul>
+            </>
+          ) : (
+            <div className="flex items-center gap-6">
+              <Link to="/login" className="flex items-center text-white hover:text-blue-500">
+                <AiOutlineLogin size={22} className="mr-2" />
+                <span className="text-sm font-bold">LOGIN</span>
+              </Link>
+              <Link to="/register" className="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-blue-700 transition-all">
+                Register
+              </Link>
+            </div>
           )}
         </div>
-      </section>
-    </div>
+      </div>
+    </nav>
   );
 };
 
