@@ -60,6 +60,9 @@ const SliderUtil = ({ data }) => {
         .slick-dots li.slick-active button:before {
           color: #3b82f6;
         }
+        .slider-main .slick-prev .slick-next{
+          display: none;
+        }
         .slick-prev {
         left: -12px;
         }
